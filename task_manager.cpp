@@ -1,5 +1,7 @@
 #include "task_manager.hpp"
 
+#include <iostream>
+
 task_manager::task_manager(int max_thread_count)
 	: max_thread_count_(max_thread_count_)
 	, thread_count_(0)
@@ -25,6 +27,7 @@ void task_manager::operator()() {
 		{ // mutex lock scope
 		boost::mutex::scoped_lock guard(tq_mutex);
 		if(can_stop) {
+			std::cout << "Stopping" << std::endl;
 			break;
 		}
 		if(tq.empty()) {
@@ -44,6 +47,7 @@ void task_manager::operator()() {
 void task_manager::stop() {
 	boost::mutex::scoped_lock guard(tq_mutex);
 	can_stop = true;
+	tq_condition.notify_one();
 }
 
 

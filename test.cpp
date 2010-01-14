@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
 		boost::function<void (void)> f=print_self_task(i);
 		tm->push(f);
 	}
-	for(int i=0; i<20; ++i) {
+	for(int i=0; i<4; ++i) {
 		sleep(3);
 		std::cout << std::setfill('=') << std::setw(80) << "main function iteration: " << i << std::endl;
 	}
