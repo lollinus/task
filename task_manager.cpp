@@ -25,19 +25,19 @@ void task_manager::operator()() {
 	for(;;) {
 		task_type execute_task;
 		{ // mutex lock scope
-		boost::mutex::scoped_lock guard(tq_mutex);
-		if(can_stop) {
-			std::cout << "Stopping" << std::endl;
-			break;
-		}
-		if(tq.empty()) {
-			tq_condition.wait(guard);
-		}
-		if(tq.empty()) {
-			continue;
-		}
-		execute_task = tq.front();
-		tq.pop();
+			boost::mutex::scoped_lock guard(tq_mutex);
+			if(can_stop) {
+				std::cout << "Stopping" << std::endl;
+				break;
+			}
+			if(tq.empty()) {
+				tq_condition.wait(guard);
+			}
+			if(tq.empty()) {
+				continue;
+			}
+			execute_task = tq.front();
+			tq.pop();
 		} // end mutex lock scope
 		execute_task();
 	}
